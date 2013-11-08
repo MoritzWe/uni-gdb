@@ -1,0 +1,159 @@
+\documentclass[ngerman]{gdb-aufgabenblatt}
+
+\renewcommand{\Aufgabenblatt}{2}
+\renewcommand{\Ausgabedatum}{Mi. 6.11.2013}
+\renewcommand{\Abgabedatum}{Fr. 14.11.2013}
+\renewcommand{\Gruppe}{Schulz, Wegmann, Nungesser}
+
+
+\begin{document}
+
+
+
+\section{Erstellen eines ER-Modells}
+
+\begin{enumerate}
+  \item \textcolor{red}{TODO}
+  
+  \begin{center}
+\begin{tikzpicture}
+
+\node[entity] (e1) {Person};
+\node[attribut] (e1-a1) [above left =5mm and 4mm of e1.north] {\underline{Name}}
+edge (e1); 
+\node[attribut] (e1-a2)  [above right=5mm and 4mm of e1.north]
+{\underline{Vorname}} edge (e1); 
+\node[attribut] (e1-a3)  [right=5mm
+of e1] {Geburtsdatum} edge (e1);
+
+\node[entity] (e2) [below left =1cm and 1mm of e1.south] {E1} edge [erbt] (e1);
+\node[entity] (e3) [below right=1cm and 1mm of e1.south] {E3} edge [erbt] (e1);
+\node[entity] (e4) [right =7cm of e3] {E4};
+
+\node[weakentity] (e5) [below =3cm of e3] {E5};
+\node[attribut] (e5-a1)  [right=5mm of e5] {\dashuline{A1}} edge (e5);
+
+\node[relationship] (r1) [right=2cm of e3] {R1};
+\path (r1) edge node[at end,anchor=north west] {$[0;2]$} (e3);
+\path (r1) edge node[at end,anchor=north east] {$[7;9]$} (e4);
+
+
+\node[weakrelationship] (r2) [below=1cm of e3] {R2};
+\path (r2) edge node[at end,anchor=north west] {$1$} (e3);
+\path (r2) edge node[at end,anchor=south east] {$8$} (e5);
+
+
+
+
+\end{tikzpicture}
+\end{center}
+  
+  \item \textcolor{red}{TODO}
+\end{enumerate}
+
+
+\section{Beschreibung von ER-Modellen}
+
+\begin{enumerate}
+  \item 
+    \begin{itemize}
+        \item Ein Student ist in einem Studiengängen immatrikuliert.
+        \item In einem Studiengang sind n Studenten immatrikuliert.
+        \item Ein Student ist durch die einwertigen Attribute MatNr, Name
+                beschreibbar.
+        \item Ein Student wird durch seine MatNr eindeutig identifiziert
+                (Primärschlüssel).
+        \item Ein Studiengang wird durch das einwertige Attribut Name
+                beschrieben.
+        \item Der Name des Studiengangs stellt den Primärschlüssel dar.
+    \end{itemize}
+  
+  \item
+    \begin{itemize}
+        \item Ein Hörsal gehört genau zu einer Universität
+        \item Zu einer Universität gehört mindestens ein Hörsal
+        \item Eine Universität wird durch ihren Namen eindeutig beschrieben
+                (Primärschlüssel)
+        \item Die Existenz eines Hörsaals begründet die Existenz der in Relation
+                stehenden Universität.
+        \item Ein Höörsal wird durch einen Namen und die Anzahl seiner Plätze
+                beschrieben.
+        \item \textcolor{red}{Fremdschlüssel, Hash}
+    \end{itemize}  
+  \item
+    \begin{itemize}
+      \item Eine Reperatur stellt eine komplexe Relation zwischen Aufträgen,
+            Ersatzteilen und Reperaturtypen dar.
+      \item Eine Reperatur wird durch die zugehörigen m Aufträge, die
+            verwendeten n Ersatzteile sowie die o Reperaturtypen beschrieben,
+            zusätzlich durch die Uhrzeit und das Datum.
+      \item Ein Auftrag enthält ein Datum und eine Auftragsnummer (ANR), welche
+            der Primärschlüssel ist
+      \item Ein Ersatzteil wird durch einen Namen, das Automodell und den Preis
+            beschrieben, wobei der Primärschlüssel aus Name und Automodell
+            zusammengesetzt ist.
+      \item Ein Repreaturtyp ist von einer eindeutigen Art (Primärschlüssel) und 
+            verfügt über einen Festpreis.
+    \end{itemize}
+  
+  \item
+    \begin{itemize}
+      \item Ein Fußballspiel ist eine komplexe Relation.
+      \item An einem Fußballspiel nehmen zwei Mannschaften in verschiedenen
+            Rollen Teil, sowie ein Stadion und ein Schiedsrichter.
+      \item Eine Mannschaft, ein Schiedsrichter als auch ein Stadion können an 
+            beliebig vielen Fußballspielen beteiligt sein, müssen es jedoch
+            nicht.
+      \item 
+    \end{itemize}
+\end{enumerate}
+
+
+\section{Schlüsselkandidaten}
+
+\begin{enumerate}
+  \item Die Anforderung, dass ein Schlüsselkandidat minimal sein muss bedeutet,
+        dass es keinen weiteren Schlüsselkandidaten geben darf, welcher sich aus
+        einer Untermenge an Feldern zusammensetzt. Bezogen auf den vorliegenden
+        sechs Enitäten wäre (Vorname, Nachname, Geb.-Dat.) ein Schlüsselkandidat
+        für den diese Anforderung verletzt ist, da auch (Nachname, Geb.-Dat.)
+        ein Schlüsselkandidat ist.
+        
+        Die Anforderung, dass ein Schlüsselkandidat eindeutig sein muss liegt
+        darin, dass es die Aufgabe des Primärschlüssels ist, eine Entity zu
+        identifizieren - was bei mehrdeutigkeit schlicht nicht mehr möglich ist,
+        und der Schlüssel so seine Aufgabe verfehlt. 
+        
+        Genau dies ist verletzt bei der Attributkombination (Vorname, Haus-Nr.).
+        Im vorliegenden Kontext tritt eine Kollisoin zwischen Frieda Weiß und 
+        Frida Müller auf, welche beide in Haus-Nr. 8 wohnen. Folglich würde
+        diese Attributkombination Datensätze nicht eindeutig beschreiben und
+        stellt keinen Schlüselkandidaten dar.
+        
+  \item Da eine sehr große Anzahl an Datensätzen existiert ist es bei den
+        gespeicherten Daten über Studierenden sehr schwer einen
+        Schlüsselkandidaten zu finden, da schwer absehbar ist, wo gleiche Werte
+        auftreten werden und wann ein Schlüsselkandidat minimal ist. 
+        
+        Zwar bieten Kombinationen wie (Vorname, Nachname,
+        Geb.-Dat.) eine hohe Wahrscheinlichkeit, es ist jedoch durchaus
+        im Rahmen des Möglichen, dass zwei Personen selben Namens und selben
+        Geburtstag studieren.
+        
+        Selbiges gilt für die Bindung des Namens an Beispielsweise die Addresse.
+        Wohnen zwei Julia Schmidt's im selben Eingang eines Wohnblocks, würde 
+        dies zu einer Kollision führen. Weiterhin wäre bereits diskutabel, ob
+        allein der Nachname oder die Kombination aus Vor- und Nachnamen plus
+        Adresse erforderich ist, sodass das minimal-Kriteritum erfüllt wird.
+        Dies ist mit dem Verlauf der Anzahl der Datensätze über die Zeit
+        schlicht nicht absehbar.
+                
+        Zwar kann bei jeden Beispiel über Wahrscheinlichkeiten argumentiert
+        werden, doch bietet jede Attributkombination ihre Tücken, sodass es sehr
+        viel sicherer ist jegliches Risiko aus dem Weg zu Räumen und ein
+        künstliches, eindeutiges Unterscheidungskriteritum einzuführen, wie
+        Beispielsweise eine Matrikelnummer, welche dediziert für jeden Studenten
+        vergeben wird und unveränderlich ist.
+\end{enumerate}
+
+\end{document}
