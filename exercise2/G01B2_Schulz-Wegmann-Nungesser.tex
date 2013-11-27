@@ -58,13 +58,13 @@
 \path (r3) edge node[at end, anchor=south west] {1} (e6);
 \path (r3) edge node[at end, anchor=north west] {n} (e4);
 
-\node[entity] (e7) [below left=3cm and 1mm of e2] {Character};
+\node[entity] (e7) [below left=3cm and -1cm of e2] {Character};
 \node[attribut] (e7-a1) [above left=5mm and 5mm of e7]
     {\underline{CharacterID}} edge (e7);
 \node[attribut] (e7-a1) [above=5mm of e7]
     {Name} edge (e7);
     
-\node[relationship] (r4) [below right=1.5cm and 1cm of e7] {spielt};
+\node[relationship] (r4) [below right=1.5cm and 5mm of e7] {spielt};
 \path (r4) edge node[at end, anchor=north east] {n} (e2);
 \path (r4) edge node[at end, anchor=north east] {m} (e6);
 \path (r4) edge node[at end, anchor=north east] {o} (e7);
@@ -89,7 +89,14 @@
 
 \end{tikzpicture}
   
-  \item \textcolor{red}{TODO}
+  \item
+    Zwei Integritätsbedingungen, die sich im ERM nicht abbilden lassen:
+    \begin{itemize}
+        \item Ein Verhandlung kann nicht nach dem letzten Drehtag liegen.
+        \item Der Drehbeginn eines Schauspielers, der einen Character in einem Film spielt, 
+                sollte vor dem Drehende sein.
+    \end{itemize}
+      
 \end{enumerate}
 
 
@@ -115,11 +122,10 @@
         \item Zu einer Universität gehört mindestens ein Hörsal
         \item Eine Universität wird durch ihren Namen eindeutig beschrieben
                 (Primärschlüssel)
-        \item Die Existenz eines Hörsaals begründet die Existenz der in Relation
-                stehenden Universität.
-        \item Ein Höörsal wird durch einen Namen und die Anzahl seiner Plätze
-                beschrieben.
-        \item \textcolor{red}{Fremdschlüssel, Hash}
+        \item Die Existenz der Universität begründet die Existenz, der in Relation stehenden, Hörsäle.
+        \item Ein Hörsal wird durch den Namen der Universität beschrieben, der
+                er angehört (Fremdschlüssel), sowie durch die Anzahl der
+                Sitzplätze.
     \end{itemize}  
   \item
     \begin{itemize}
@@ -140,11 +146,11 @@
   \item
     \begin{itemize}
       \item Ein Fußballspiel ist eine komplexe Relation.
-      \item An einem Fußballspiel nehmen zwei Mannschaften in verschiedenen
-            Rollen Teil, sowie ein Stadion und ein Schiedsrichter.
+      \item An einem Fußballspiel sind 2 Mannschaften, 1 Stadion und 1
+            Schiedsrichter beteiligt.
       \item Eine Mannschaft, ein Schiedsrichter als auch ein Stadion können an 
-            beliebig vielen Fußballspielen beteiligt sein, müssen es jedoch
-            nicht.
+            beliebig vielen Fußballspielen beteiligt sein, müssen jedoch an
+            keinem beteiligt sein.
       \item 
     \end{itemize}
 \end{enumerate}
@@ -156,20 +162,23 @@
   \item Die Anforderung, dass ein Schlüsselkandidat minimal sein muss bedeutet,
         dass es keinen weiteren Schlüsselkandidaten geben darf, welcher sich aus
         einer Untermenge an Feldern zusammensetzt. Bezogen auf den vorliegenden
-        sechs Enitäten wäre (Vorname, Nachname, Geb.-Dat.) ein Schlüsselkandidat
-        für den diese Anforderung verletzt ist, da auch (Nachname, Geb.-Dat.)
+        sechs Enitäten wäre (Vorname, Nachname, Geb.-Dat.) kein
+        Schlüsselkandidat, da auch (Nachname, Geb.-Dat.)
         ein Schlüsselkandidat ist.
         
         Die Anforderung, dass ein Schlüsselkandidat eindeutig sein muss liegt
         darin, dass es die Aufgabe des Primärschlüssels ist, eine Entity zu
-        identifizieren - was bei mehrdeutigkeit schlicht nicht mehr möglich ist,
+        identifizieren - was bei Mehrdeutigkeit schlicht nicht mehr möglich ist,
         und der Schlüssel so seine Aufgabe verfehlt. 
         
         Genau dies ist verletzt bei der Attributkombination (Vorname, Haus-Nr.).
-        Im vorliegenden Kontext tritt eine Kollisoin zwischen Frieda Weiß und 
+        Im vorliegenden Kontext tritt eine Kollision zwischen Frieda Weiß und 
         Frida Müller auf, welche beide in Haus-Nr. 8 wohnen. Folglich würde
         diese Attributkombination Datensätze nicht eindeutig beschreiben und
         stellt keinen Schlüselkandidaten dar.
+        
+        Zwei Beispiele möglicher Schlüsselkandidaten bei dem vorliegenden
+        Kontext wären: (TelefonNr.), (PLZ)
         
   \item Da eine sehr große Anzahl an Datensätzen existiert ist es bei den
         gespeicherten Daten über Studierenden sehr schwer einen
@@ -190,11 +199,17 @@
         schlicht nicht absehbar.
                 
         Zwar kann bei jeden Beispiel über Wahrscheinlichkeiten argumentiert
-        werden, doch bietet jede Attributkombination ihre Tücken, sodass es sehr
-        viel sicherer ist jegliches Risiko aus dem Weg zu Räumen und ein
-        künstliches, eindeutiges Unterscheidungskriteritum einzuführen, wie
-        Beispielsweise eine Matrikelnummer, welche dediziert für jeden Studenten
-        vergeben wird und unveränderlich ist.
+        werden, doch bietet jede Attributkombination ihre Tücken. Das
+        Vorgehen, einen Schlüssel als eine, wie auch immer geartete,
+        Kombination der Attributen der Studierenden direkt abzuleiten, führt
+        so selbst bei einem minimalem, zu einem unweigerlich sehr langen
+        Schlüssel. Der Einsatz einen solchen Schlüssels ist, selbst wenn
+        dieser unter garantie eindeutig wäre, äussert unpraktikabel.
+        
+        Es ist so deutlich sicherer und praktikabler, jegliches Risiko aus
+        dem Weg zu Räumen und ein künstliches, eindeutiges
+        Unterscheidungskriteritum einzuführen. Wie Beispielsweise eine
+        Matrikelnummer, welche dediziert für jeden Studenten vergeben wird und unveränderlich ist.
 \end{enumerate}
 
 \end{document}
