@@ -1,6 +1,6 @@
 \documentclass[ngerman]{gdb-aufgabenblatt}
 
-\renewcommand{\Aufgabenblatt}{2}
+\renewcommand{\Aufgabenblatt}{3}
 \renewcommand{\Ausgabedatum}{Mi. 16.11.2013}
 \renewcommand{\Abgabedatum}{Fr. 1.12.2013}
 \renewcommand{\Gruppe}{Schulz, Wegmann, Nungesser}
@@ -10,7 +10,83 @@
 
 
 \section{Konzeptioneller Entwurf}
-\textcolor{red}{TODO}
+
+\begin{tikzpicture}
+
+\node[entity] (e1) {Bio-Molekül};
+\node[attribut] (e1-a1) [above right=-2.5mm and 5mm of e1] {\uline{MolekülId}} 
+    edge (e1); 
+\node[attribut] (e1-a2) [below right=-2.5mm and 5mm of e1] {Beschreibung} 
+    edge (e1);
+
+\node[entity] (e2) [below left=1cm and 2cm of e1.south] {DNA-Molekül} 
+    edge[erbt] (e1);
+\node[attribut] (e2-a1)  [above=5mm of e2] {Nukleotidsequenz} edge (e2); 
+\node[attribut] (e2-a3)  [left=5mm of e2] {ChromosonNr} edge (e2); 
+\node[attribut] (e2-a2)  [above left=5mm of e2] {StrangOrientierung} edge (e2); 
+     
+\node[entity] (e3) [below right=1cm and 2cm of e1.south] {mRNA-Molekül} 
+    edge[erbt] (e1); 
+\node[attribut] (e3-a1)  [above right=5mm of e3] {Nukleotidsequenz} edge (e3); 
+\node[attribut] (e3-a2)  [right=5mm of e3] {ViennaString} edge (e3); 
+\node[relationship] (r4) [below=8mm of e1] {transkribiert};
+\node[attribut] (r4-a1)  [below left=5mm and -2mm of r4] {StartPosition} 
+    edge (r4); 
+\node[attribut] (r4-a2)  [below right=5mm and -2mm of r4] {EndPosition}
+    edge (r4); 
+\path (r4) edge node[at end,anchor=north west] {$n$} (e2);
+\path (r4) edge node[at end,anchor=north east] {$1$} (e3);
+
+\node[weakentity] (e5) [below=3cm of e3] {Protein};
+\node[attribut] (e5-a1)  [above right=5mm of e5] {Aminosäuresequenz}
+edge (e5); 
+ \node[attribut] (e5-a2)  [right=5mm of e5] {CATHKlassifikation} edge
+ (e5); 
+ \node[attribut] (e5-a3)  [below right=5mm of e5] {Molekulargewicht} edge (e5);
+\node[weakrelationship] (r2) [below=1cm of e3] {synthetisiert};
+\path (r2) edge node[at end,anchor=north west] {$[0;1]$} (e3);
+\path (r2) edge node[at end,anchor=south west] {$[1;1]$} (e5);
+
+
+\node[entity] (e8) [below=3cm of e5]{Domäne};
+\node[attribut] (e8-a1)  [above left=5mm of e8] {\uline{DomänenID}} edge (e8);
+\node[attribut] (e8-a2)  [left=5mm of e8] {HiddenMarkovModel} edge (e8);
+\node[attribut] (e8-a3)  [below left=5mm of e8] {Funktion} edge (e8);
+\node[relationship] (r7) [below=1cm of e5] {enthält};
+\path (r7) edge node[at end,anchor=north west] {$[0;\infty]$} (e5);
+\path (r7) edge node[at end,anchor=south west] {$[1;\infty]$} (e8);
+
+\node[entity] (e6) [above right=2.5cm and 5mm of e1.north]{Artikel};
+\node[attribut] (e6-a1)  [above=5mm of e6] {\uline{Titel}} edge (e6);
+\node[attribut] (e6-a2)  [above right=5mm of e6] {Datum} edge (e6);
+\node[relationship] (r4) [below=5mm of e6] {veröffentlicht};
+\path (r4) edge node[at end,anchor=north west] {n} (e6);
+\path (r4) edge node[at end,anchor=south west] {1} (e1);
+
+\node[entity] (e4) [right=4cm of e6] {Wissenschaftler};
+\node[attribut] (e4-a1)  [above=5mm of e4] {\uline{Name}} edge (e4);
+\node[multivalentattribut] (e4-a2)  [below=5mm of e4] {Kontaktinformationen} edge (e4);
+\node[attribut] (e4-a2-a1)  [below left=5mm of e4-a2] {Telefonnummer} edge
+(e4-a2); 
+\node[attribut] (e4-a2-a1)  [below=5mm of e4-a2] {E-Mail-Adresse} edge
+(e4-a2); \node[relationship] (r1) [left=1cm of e4] {schreibt};
+\path (r1) edge node[at end,anchor=south east] {$[0;\infty]$} (e4);
+\path (r1) edge node[at end,anchor=south west] {$[1;\infty]$} (e6);
+
+\node[entity] (e7) [above left=2.5cm and 5mm of e1.north] {Organismus};
+\node[attribut] (e7-a1)  [above=5mm of e7] {\uline{TaxanomieID}} edge (e7);
+\node[attribut] (e7-a2)  [above left=5mm and 5mm of e7] {Name}
+    edge (e7); 
+ \node[attribut] (e7-a3)  [left=5mm of e7]
+    {Trivialname} edge (e7);
+\node[relationship] (r3) [below=5mm of e7] {vorkommen};
+\path (r3) edge node[at end,anchor=north west] {$[1;\infty]$} (e7);
+\path (r3) edge node[at end,anchor=south east] {$[0;\infty]$} (e1);
+
+
+
+
+\end{tikzpicture}
 
 
 \section{Logischer Entwurf}
