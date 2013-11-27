@@ -1,3 +1,16 @@
+#Eclipse Project Files
+.project
+.settings
+.texlipse
+
+# Template files
+*/gdb-aufgabenblatt.cls
+*/sfmath.sty
+*/uhh.pdf
+*/vsis*
+GDB-Abgabe_Vorlage
+
+#TEX files
 *.acn
 *.acr
 *.alg
