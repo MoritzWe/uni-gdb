@@ -13,19 +13,19 @@
 
 \begin{tikzpicture}
 
-\node[entity] (e1) {Bio-Molekül};
-\node[attribut] (e1-a1) [above right=-2.5mm and 5mm of e1] {\uline{MolekülId}} 
+\node[entity] (e1) {Bio-Molekï¿½l};
+\node[attribut] (e1-a1) [above right=-2.5mm and 5mm of e1] {\uline{Molekï¿½lId}} 
     edge (e1); 
 \node[attribut] (e1-a2) [below right=-2.5mm and 5mm of e1] {Beschreibung} 
     edge (e1);
 
-\node[entity] (e2) [below left=1cm and 2cm of e1.south] {DNA-Molekül} 
+\node[entity] (e2) [below left=1cm and 2cm of e1.south] {DNA-Molekï¿½l} 
     edge[erbt] (e1);
 \node[attribut] (e2-a1)  [above=5mm of e2] {Nukleotidsequenz} edge (e2); 
 \node[attribut] (e2-a3)  [left=5mm of e2] {ChromosonNr} edge (e2); 
 \node[attribut] (e2-a2)  [above left=5mm of e2] {StrangOrientierung} edge (e2); 
      
-\node[entity] (e3) [below right=1cm and 2cm of e1.south] {mRNA-Molekül} 
+\node[entity] (e3) [below right=1cm and 2cm of e1.south] {mRNA-Molekï¿½l} 
     edge[erbt] (e1); 
 \node[attribut] (e3-a1)  [above right=5mm of e3] {Nukleotidsequenz} edge (e3); 
 \node[attribut] (e3-a2)  [right=5mm of e3] {ViennaString} edge (e3); 
@@ -38,7 +38,7 @@
 \path (r4) edge node[at end,anchor=north east] {$1$} (e3);
 
 \node[weakentity] (e5) [below=3cm of e3] {Protein};
-\node[attribut] (e5-a1)  [above right=5mm of e5] {Aminosäuresequenz}
+\node[attribut] (e5-a1)  [above right=5mm of e5] {Aminosï¿½uresequenz}
 edge (e5); 
  \node[attribut] (e5-a2)  [right=5mm of e5] {CATHKlassifikation} edge
  (e5); 
@@ -48,18 +48,18 @@ edge (e5);
 \path (r2) edge node[at end,anchor=south west] {$[1;1]$} (e5);
 
 
-\node[entity] (e8) [below=3cm of e5]{Domäne};
-\node[attribut] (e8-a1)  [above left=5mm of e8] {\uline{DomänenID}} edge (e8);
+\node[entity] (e8) [below=3cm of e5]{Domï¿½ne};
+\node[attribut] (e8-a1)  [above left=5mm of e8] {\uline{Domï¿½nenID}} edge (e8);
 \node[attribut] (e8-a2)  [left=5mm of e8] {HiddenMarkovModel} edge (e8);
 \node[attribut] (e8-a3)  [below left=5mm of e8] {Funktion} edge (e8);
-\node[relationship] (r7) [below=1cm of e5] {enthält};
+\node[relationship] (r7) [below=1cm of e5] {enthï¿½lt};
 \path (r7) edge node[at end,anchor=north west] {$[0;\infty]$} (e5);
 \path (r7) edge node[at end,anchor=south west] {$[1;\infty]$} (e8);
 
 \node[entity] (e6) [above right=2.5cm and 5mm of e1.north]{Artikel};
 \node[attribut] (e6-a1)  [above=5mm of e6] {\uline{Titel}} edge (e6);
 \node[attribut] (e6-a2)  [above right=5mm of e6] {Datum} edge (e6);
-\node[relationship] (r4) [below=5mm of e6] {veröffentlicht};
+\node[relationship] (r4) [below=5mm of e6] {verï¿½ffentlicht};
 \path (r4) edge node[at end,anchor=north west] {n} (e6);
 \path (r4) edge node[at end,anchor=south west] {1} (e1);
 
@@ -134,7 +134,65 @@ edge (e5);
 
 \begin{enumerate}
     \item
-        \textcolor{red}{TODO}
+       Operatorbaum A
+        \begin{tikzpicture}
+
+            \node (Rennfahrer) {Rennfahrer};
+            \node (Platzierung) [left=25mm of Rennfahrer] {Platzierung};
+            \node (Rennort) [left=25mm of Platzierung] {Rennort};
+
+            \node (join1) [above=20mm of $(Rennfahrer)!.5!(Platzierung)$] {$\verbund$};
+
+            \node (join2) [above=20mm of $(join1)!.5!(Rennort)$] {$\verbund$};
+
+            \node (selektion1) [above=of join2] {$\selektion{Platz<\wert{11}}$};
+
+            \node (selektion2) [above=of selektion1] {$\selektion{Name=\wert{ChinaGP}}$};
+
+            \node (projektion) [above=of selektion1] {$\projektion{Wohnort}$};
+
+            \node (final) [above=of projektion] {};
+
+            \path (Rennfahrer) edge node[smallr,near start,above right] {?? Tupel\\?? Attribute} (join1);
+            \path (Platzierung) edge node[smalll,near start,above left] {?? Tupel\\?? Attribute} (join1);
+
+            \path (join1) edge node[smallr,near start,above left] {?? Tupel\\?? Attribute} (join2);
+            \path (Rennort) edge node[smallr,near start,above left] {?? Tupel\\?? Attribute} (join2);
+
+            \path (selektion1) edge node[smallr,midway,left] {$??\cdot\frac{??}{??}=??$ Tupel\\?? Attribute} (selektion2);
+            \path (selektion2) edge node[smallr,midway,left] {$??\cdot\frac{??}{??}=??$ Tupel\\?? Attribute} (projektion);
+            \path (projektion) edge node[smallr,midway,left] {$??$ Tupel\\1 Attribut} (final);
+
+        \end{tikzpicture}
+    \item
+        Operatorbaum B
+        \begin{tikzpicture}
+            \node (Rennfahrer) {Rennfahrer};
+            \node (Platzierung) [left=25mm of Rennfahrer] {Platzierung};
+            \node (Rennort) [left=25mm of Platzierung] {Rennort};
+
+            \node (selektion1) [above=of  Platzierung] {$\selektion{Platz<\wert{11}}$};
+
+            \node (selektion2) [above=of Rennort] {$\selektion{Name=\wert{ChinaGP}}$};
+
+            \node (join1) [above=20mm of $(selektion1)!.5!(selektion2)$] {$\verbund$}; 
+
+            \node (projektion) [above=of join1] {$\projektion{Wohnort}$};
+
+            \node (final) [above=of projektion] {};
+
+            \path (Platzierung) edge node[smalll,near start,above left] {?? Tupel\\?? Attribute} (selektion1);
+            \path (Rennort) edge node[smallr,near start,above left] {?? Tupel\\?? Attribute} (selektion2);
+            \path (Rennfahrer) edge node[smallr,near start,above right] {?? Tupel\\?? Attribute} (join1);
+
+            \path (selektion1) edge node[smallr,midway,left] {$??\cdot\frac{??}{??}=??$ Tupel\\?? Attribute} (join1);
+            \path (selektion2) edge node[smallr,midway,left] {$??\cdot\frac{??}{??}=??$ Tupel\\?? Attribute} (join1);
+
+            \path (join1) edge node[smallr,near start,above left] {?? Tupel\\?? Attribute} (projektion);
+
+            \path (projektion) edge node[smallr,midway,left] {$??$ Tupel\\1 Attribut} (final);
+
+        \end{tikzpicture}
     \item  
         \textcolor{red}{TODO}
         
